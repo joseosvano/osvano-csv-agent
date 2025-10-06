@@ -70,7 +70,6 @@ if uploaded_file and api_key:
     # ⚡ Extra: gerar ZIP com histogramas
     st.write("### Gerar histogramas de todas as colunas numéricas")
     if st.button("Gerar ZIP de gráficos", disabled=utils.verificar_pasta_arquivos("files")):
-        utils.limpar_pasta_graficos("files")
         num_cols = df.select_dtypes(include="number").columns.tolist()
         if not num_cols:
             st.warning("Nenhuma coluna numérica encontrada!")
