@@ -57,7 +57,9 @@ if uploaded_file and api_key:
                 # Verifica se a resposta é um caminho de arquivo ou ZIP
                 if isinstance(resposta, str) and (resposta.endswith(".png") or resposta.endswith(".zip")) and os.path.exists(resposta):
                     file_name = os.path.basename(resposta)
-                    with open(resposta, "rb") as f:
+                    png_path = os.path.join(tempfile.TemporaryDirectory(), file_name)
+                    st.write("### PNG: "+png_path)
+                    with open(png_path, "rb") as f:
                         st.download_button(
                             label=f"📥 Baixar {file_name}",
                             data=f,
