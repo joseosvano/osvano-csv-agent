@@ -139,6 +139,9 @@ class CSVAnalysisAgent:
             return {"output": "Nenhum arquivo carregado."}
         try:
             result = self.agent.invoke(question)
+            # Extrai apenas o campo 'output' se result for um dicionário
+            if isinstance(result, dict) and "output" in result:
+                return {"output": result["output"]}            
             return {"output": result}
         except Exception as e:
             return {"output": f"Erro ao processar a pergunta: {str(e)}"}
