@@ -19,7 +19,7 @@ if "historico" not in st.session_state:
     st.session_state.historico = []
 
 # 🔑 Pega a chave do secrets (configurada no Streamlit Cloud)
-api_key =  st.secrets["GROQ_API_KEY"]
+api_key = st.secrets["GROQ_API_KEY"]
 if "GROQ_API_KEY" not in st.secrets:
     st.error("❌ Configure sua chave da OpenAI em st.secrets['GROQ_API_KEY']")
 else:
@@ -45,14 +45,25 @@ if uploaded_file and api_key:
     if st.button("Perguntar", disabled=not pergunta):
         with st.spinner("Pensando..."):
             try:
-                resposta_dict = CSVAnalysisAgent.analyze_csv(pergunta)  # Muda para analyze_csv
-                resposta = resposta_dict["output"]  # Extrai o output
+                resposta_dict = CSVAnalysisAgent.analyze_csv(pergunta)
+                resposta = resposta_dict["output"]
                 
                 # Armazena no histórico
                 st.session_state.historico.append({"pergunta": pergunta, "resposta": resposta})
     
                 st.success("Resposta do Agente:")
                 st.write(resposta)
+
+                # Verifica se a resposta é um caminho de arquivo ou ZIP
+                if isinstance(resposta, str) and (resposta.endswith(".png") or resposta.endswith(".zip")) and os.path.exists(resposta):
+                    file_name = os.path.basename(resposta)
+                    with open(resposta, "rb") as f:
+                        st.download_button(
+                            label=f"📥 Baixar {file_name}",
+                            data=f,
+                            file_name=file_name,
+                            mime="image/png" if resposta.endswith(".png") else "application/zip"
+                        )
             except Exception as e:
                 st.error(f"Erro ao processar: {e}")
     
