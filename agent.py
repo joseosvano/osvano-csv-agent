@@ -29,7 +29,7 @@ class CSVAnalysisAgent:
         
         self.memory = ConversationBufferMemory(
             memory_key="chat_history", 
-            return_messages=False
+            return_messages=True
         )
 
     def load_file(self, file):
@@ -113,6 +113,8 @@ class CSVAnalysisAgent:
                             for f in arquivos:
                                 zipf.write(f, os.path.basename(f))
                     ``` 
+                    Histórico da conversa anterior: {{chat_history}}
+                    Pergunta atual: {{input}}
             """
 
             self.agent = create_pandas_dataframe_agent(
