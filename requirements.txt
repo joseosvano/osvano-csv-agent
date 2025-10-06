@@ -3,10 +3,10 @@ openai
 pandas
 groq
 matplotlib
-langchain
+langchain>=0.1.0
 langchain.tools
 langchain-community
-langchain-experimental
+langchain-experimental>=0.0.40
 langchain-groq
 langsmith>=0.1.0
 tabulate

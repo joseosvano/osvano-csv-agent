@@ -33,10 +33,11 @@ uploaded_file = st.file_uploader("Carregue um arquivo CSV", type=["csv"])
 caminho = "files"
 if uploaded_file and api_key:
     df = CSVAnalysisAgent.load_file(uploaded_file)
-    df = pd.read_csv(uploaded_file)
-
-    st.write("### Pré-visualização dos dados")
-    st.dataframe(df.head())
+    if not isinstance(df, pd.DataFrame):  # Verificação mínima para falhas
+        st.error("Falha ao carregar o CSV. Verifique o arquivo.")
+    else:
+        st.write("### Pré-visualização dos dados")
+        st.dataframe(df.head())
 
     # Pergunta do usuário
     pergunta = st.text_area("❓ Faça uma pergunta sobre os dados:")
@@ -44,7 +45,8 @@ if uploaded_file and api_key:
     if st.button("Perguntar", disabled=not pergunta):
         with st.spinner("Pensando..."):
             try:
-                resposta = CSVAnalysisAgent.agent.run(pergunta)
+                resposta_dict = CSVAnalysisAgent.analyze_csv(pergunta)  # Muda para analyze_csv
+                resposta = resposta_dict["output"]  # Extrai o output
                 
                 # Armazena no histórico
                 st.session_state.historico.append({"pergunta": pergunta, "resposta": resposta})

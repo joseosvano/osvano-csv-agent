@@ -32,8 +32,15 @@ class CSVAnalysisAgent:
             return_messages=False
         )
 
-    def load_file(self, file_path: str):
+    def load_file(self, file):
         try:
+            # Lida com string (path) ou UploadedFile (objeto de arquivo)
+            if isinstance(file, str):
+                self.df = pd.read_csv(file)
+            else:  # Assume UploadedFile do Streamlit
+                file.seek(0)  # Reseta o ponteiro do arquivo (boa prática)
+                self.df = pd.read_csv(file)
+            self.current_file = file if isinstance(file, str) else file.name            
             prompt_inicial = """
                 Você é um assistente especializado em análise de dados CSV. 
                 Seu objetivo é permitir que o usuário faça perguntas sobre qualquer arquivo CSV carregado e fornecer análises detalhadas de EDA (Exploração de Dados)
