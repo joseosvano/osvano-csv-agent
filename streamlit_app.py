@@ -7,29 +7,6 @@ import matplotlib.pyplot as plt
 from utils import Utils
 from agent import CSVAnalysisAgent
 
-# CSS personalizado para fundo cinza e botões verdes
-st.markdown("""
-    <style>
-    /* Fundo cinza claro */
-    .stApp {
-        background-color: #f0f0f0;
-    }
-    
-    /* Botões verdes com destaque */
-    .stButton > button {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 10px 20px;
-        font-weight: bold;
-    }
-    .stButton > button:hover {
-        background-color: #45a049;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 def setup_app():
     """Configurações iniciais do app."""
     st.set_page_config(page_title="Agente CSV", layout="wide")
