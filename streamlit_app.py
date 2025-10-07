@@ -10,7 +10,7 @@ from agent import CSVAnalysisAgent
 def setup_app():
     """Configurações iniciais do app."""
     st.set_page_config(page_title="Agente CSV LLM", layout="wide")
-    st.title("🤖 Agente de Análise Exploratória de Dados (LLM + CSV)")
+    st.title("Agente de Exploraçãos de Dados (LLM + CSV)")
 
 def init_session_state():
     """Inicializa o estado da sessão."""
