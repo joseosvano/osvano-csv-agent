@@ -113,8 +113,6 @@ class CSVAnalysisAgent:
                             for f in arquivos:
                                 zipf.write(f, os.path.basename(f))
                     ``` 
-                    Histórico da conversa anterior: {chat_history}
-                    Pergunta atual: {input}
             """
 
             self.agent = create_pandas_dataframe_agent(
