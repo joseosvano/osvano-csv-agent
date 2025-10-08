@@ -12,7 +12,7 @@ from agent import CSVAnalysisAgent
 
 st.set_page_config(page_title="Agente CSV LLM", layout="wide")
 
-st.title("🤖 Agente de Análise Exploratória de Dados (LLM + CSV)")
+st.title("Agente de Exploração de Dados (LLM + CSV)")
 
 # Inicializa o histórico na sessão
 if "historico" not in st.session_state:
@@ -74,34 +74,8 @@ if uploaded_file and api_key:
             except Exception as e:
                 st.error(f"Erro ao processar: {e}")
     
-    # ⚡ Extra: gerar ZIP com histogramas
-    st.write("### Gerar histogramas de todas as colunas numéricas")
-    if st.button("Gerar ZIP de gráficos", disabled=utils.verificar_pasta_arquivos("files")):
-        num_cols = df.select_dtypes(include="number").columns.tolist()
-        if not num_cols:
-            st.warning("Nenhuma coluna numérica encontrada!")
-        else:
-            with tempfile.TemporaryDirectory() as tmpdir:
-                arquivos = []
-                for col in num_cols:
-                    fig, ax = plt.subplots()
-                    df[col].hist(bins=30, ax=ax)
-                    ax.set_title(f"Distribuição de {col}")
-                    caminho = os.path.join(tmpdir, f"{col}.png")
-                    fig.savefig(caminho)
-                    arquivos.append(caminho)
-                    plt.close(fig)
-
-                zip_path = os.path.join(tmpdir, "graficos.zip")
-                with ZipFile(zip_path, "w") as zipf:
-                    for f in arquivos:
-                        zipf.write(f, os.path.basename(f))
-
-                with open(zip_path, "rb") as f:
-                    st.download_button("📥 Baixar gráficos ZIP", f, file_name="graficos.zip")
-
 # Exibe todo o histórico
-st.subheader("Histórico de Perguntas e Respostas")
+st.subheader("Histórico:")
 for idx, item in enumerate(st.session_state.historico, 1):
     st.markdown(f"**{idx}. Pergunta:** {item['pergunta']}")
     st.markdown(f"➡️ **Resposta:** {item['resposta']}")
